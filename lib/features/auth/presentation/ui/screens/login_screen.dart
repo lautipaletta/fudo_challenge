@@ -28,6 +28,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final state = ref.watch(authProvider);
     final controller = ref.read(authProvider.notifier);
 
+    // Consideración: este listener debería estar en una splash que decida si ir al login o a la pantalla de posts
+    // por cuestiones del scope del challenge, lo dejo acá.
     ref.listen(authProvider, (previous, next) {
       if (next.isLoading) return;
       if (next.hasValue && next.value?.isAuthenticated == true) {

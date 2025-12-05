@@ -8,7 +8,7 @@ import 'package:fudo_challenge/core/cache/network_cache/network_cache_service_im
 
 // Cache providers
 final cacheServiceProvider = Provider<CacheService>((ref) {
-  return CacheServiceImpl();
+  return CacheServiceImpl(boxName: 'cache_box');
 });
 
 final cacheKeyGeneratorProvider = Provider<CacheKeyGenerator>((ref) {

@@ -4,7 +4,11 @@ import 'package:fudo_challenge/core/cache/cache/cache_service.dart';
 import 'package:hive/hive.dart';
 
 class CacheServiceImpl implements CacheService {
-  Future<Box<String>> _openBox() async => await Hive.openBox('cache_box');
+  CacheServiceImpl({required this.boxName});
+
+  final String boxName;
+
+  Future<Box<String>> _openBox() async => await Hive.openBox(boxName);
 
   @override
   Future<void> save({
