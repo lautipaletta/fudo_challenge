@@ -9,7 +9,7 @@ class Session {
   final String email;
 
   factory Session.fromJson(Map<String, dynamic> json) =>
-      Session(email: json['email']);
+      _$SessionFromJson(json);
 
-  Map<String, dynamic> toJson() => {'email': email};
+  Map<String, dynamic> toJson() => _$SessionToJson(this);
 }

@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fudo_challenge/core/cache/cache/cache_service.dart';
 import 'package:fudo_challenge/core/cache/cache/cache_service_impl.dart';
-import 'package:fudo_challenge/core/di/providers.dart';
 import 'package:fudo_challenge/features/auth/data/data_sources/auth_data_source.dart';
 import 'package:fudo_challenge/features/auth/data/data_sources/local/hive_local_auth_data_source.dart';
 import 'package:fudo_challenge/features/auth/data/data_sources/local_auth_data_source.dart';
