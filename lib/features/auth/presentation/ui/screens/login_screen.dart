@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fudo_challenge/config/routes/routes.dart';
 import 'package:fudo_challenge/core/common/utils/form_validators.dart';
 import 'package:fudo_challenge/core/common/utils/snackbar_handler.dart';
+import 'package:fudo_challenge/core/common/widgets/fudo_loading.dart';
 import 'package:fudo_challenge/core/common/widgets/fudo_text_field.dart';
 import 'package:fudo_challenge/core/exceptions/fudo_exception.dart';
 import 'package:fudo_challenge/features/auth/di/providers.dart';
@@ -17,6 +18,7 @@ class LoginScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(authProvider);
     final controller = ref.read(authProvider.notifier);
 
     ref.listen(authProvider, (previous, next) {
@@ -54,15 +56,17 @@ class LoginScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      controller.signIn(
-                        _emailController.text,
-                        _passwordController.text,
-                      );
-                    }
-                  },
-                  child: Text('Login'),
+                  onPressed: state.isLoading
+                      ? null
+                      : () {
+                          if (_formKey.currentState!.validate()) {
+                            controller.signIn(
+                              _emailController.text,
+                              _passwordController.text,
+                            );
+                          }
+                        },
+                  child: state.isLoading ? const FudoLoading() : Text('Login'),
                 ),
               ],
             ),
