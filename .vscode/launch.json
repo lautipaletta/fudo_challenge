@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "lib/main.dart",
             "toolArgs": [
-                "--dart-define-from-file=keys/.env.development"
+                "--dart-define-from-file=keys/development-keys.json"
             ]
         }
     ]

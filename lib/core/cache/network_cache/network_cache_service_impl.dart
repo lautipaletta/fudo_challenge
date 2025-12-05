@@ -19,12 +19,16 @@ class NetworkCacheServiceImpl implements NetworkCacheService {
     Map<String, dynamic>? queryParams,
     Duration? expiry,
   }) async {
-    final key = cacheKeyGenerator.generateNetworkCacheKey(
-      url: url,
-      method: method,
-      queryParams: queryParams,
-    );
-    await cacheService.save(key: key, value: response, expiry: expiry);
+    try {
+      final key = cacheKeyGenerator.generateNetworkCacheKey(
+        url: url,
+        method: method,
+        queryParams: queryParams,
+      );
+      await cacheService.save(key: key, value: response, expiry: expiry);
+    } catch (_) {
+      return;
+    }
   }
 
   @override
@@ -33,11 +37,15 @@ class NetworkCacheServiceImpl implements NetworkCacheService {
     required String method,
     Map<String, dynamic>? queryParams,
   }) async {
-    final key = cacheKeyGenerator.generateNetworkCacheKey(
-      url: url,
-      method: method,
-      queryParams: queryParams,
-    );
-    return await cacheService.get(key);
+    try {
+      final key = cacheKeyGenerator.generateNetworkCacheKey(
+        url: url,
+        method: method,
+        queryParams: queryParams,
+      );
+      return await cacheService.get(key);
+    } catch (_) {
+      return null;
+    }
   }
 }

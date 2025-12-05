@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fudo_challenge/core/cache/network_cache/network_cache_service.dart';
 
 class NetworkCacheInterceptor extends Interceptor {
@@ -66,6 +67,17 @@ class NetworkCacheInterceptor extends Interceptor {
       );
 
       if (cachedResponse != null) {
+        if (kDebugMode) {
+          print(
+            '╔══════════════════════════════════════════════════════════════╗',
+          );
+          print('║ Cached response found for URL: $url');
+          print('║ Method: $method');
+          print('║ Query params: $params');
+          print(
+            '╚══════════════════════════════════════════════════════════════╝',
+          );
+        }
         return handler.resolve(
           Response(
             requestOptions: err.requestOptions,

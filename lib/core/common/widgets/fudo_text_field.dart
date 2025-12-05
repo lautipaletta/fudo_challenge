@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 class FudoTextField extends StatelessWidget {
   const FudoTextField({
     super.key,
-    required this.controller,
-    required this.labelText,
+    this.labelText,
+    this.controller,
     this.hintText,
     this.validator,
     this.obscureText = false,
+    this.onChanged,
   });
 
-  final TextEditingController controller;
-  final String labelText;
+  final TextEditingController? controller;
+  final String? labelText;
   final String? hintText;
   final String? Function(String?)? validator;
   final bool obscureText;
+  final void Function(String?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class FudoTextField extends StatelessWidget {
       decoration: InputDecoration(labelText: labelText, hintText: hintText),
       validator: validator,
       obscureText: obscureText,
+      onChanged: onChanged,
     );
   }
 }
