@@ -15,8 +15,14 @@ class PostsProvider extends AsyncNotifier<List<Post>> {
     return [];
   }
 
+  void _setLoading() {
+    if (!state.hasValue) {
+      state = const AsyncValue.loading();
+    }
+  }
+
   Future<void> getPosts({String? query}) async {
-    state = const AsyncValue.loading();
+    _setLoading();
     final result = await _getPostsUseCase.call(query: query);
     result.fold(
       (l) => state = AsyncValue.error(l, StackTrace.current),
@@ -29,7 +35,7 @@ class PostsProvider extends AsyncNotifier<List<Post>> {
     required String body,
     required int userId,
   }) async {
-    state = const AsyncValue.loading();
+    _setLoading();
     final result = await _createPostUseCase.call(
       title: title,
       body: body,
