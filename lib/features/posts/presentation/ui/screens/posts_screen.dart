@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fudo_challenge/config/routes/routes.dart';
 import 'package:fudo_challenge/core/common/utils/debouncer.dart';
 import 'package:fudo_challenge/core/common/widgets/fudo_loading.dart';
 import 'package:fudo_challenge/core/common/widgets/fudo_text_field.dart';
 import 'package:fudo_challenge/core/exceptions/fudo_exception.dart';
+import 'package:fudo_challenge/features/auth/di/providers.dart';
 import 'package:fudo_challenge/features/posts/di/providers.dart';
+import 'package:go_router/go_router.dart';
 
 class PostsScreen extends ConsumerStatefulWidget {
   const PostsScreen({super.key});
@@ -32,13 +35,35 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
     });
   }
 
+  Future<void> _onRefresh() async {
+    final query = _searchController.text.trim();
+    await ref.read(postsProvider.notifier).getPosts(query: query);
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(postsProvider);
+
+    ref.listen(authProvider, (previous, next) {
+      if (next.hasValue && next.value?.isAuthenticated == false) {
+        context.goNamed(AppRoutes.login.name);
+      }
+    });
+
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Posts'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => ref.read(authProvider.notifier).logout(),
+            tooltip: 'Logout',
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: Icon(Icons.draw),
+        child: const Icon(Icons.draw),
       ),
       body: SafeArea(
         child: Padding(
@@ -46,51 +71,63 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 48),
-              Text(
-                'Posts',
-                style: Theme.of(context).textTheme.headlineMedium,
-                textAlign: TextAlign.center,
-              ),
               FudoTextField(
                 controller: _searchController,
                 hintText: 'Search by author name',
                 onChanged: (value) => _debouncer.run(() {
-                  ref.read(postsProvider.notifier).getPosts(query: value);
+                  ref
+                      .read(postsProvider.notifier)
+                      .getPosts(query: value?.trim());
                 }),
               ),
               const SizedBox(height: 16),
               Expanded(
                 child: state.when(
-                  data: (value) => ListView.builder(
-                    itemCount: value.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == value.length) {
-                        return const SizedBox(height: 50);
-                      }
-                      return ListTile(
-                        title: Text(
-                          'Post ${index + 1}: ${value[index].title}',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        subtitle: Text(
-                          value[index].body,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      );
-                    },
-                  ),
-                  error: (e, _) => Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.error, color: Colors.red, size: 48),
-                        const SizedBox(height: 16),
-                        Text((e as FudoException).message),
-                      ],
+                  data: (value) => RefreshIndicator(
+                    onRefresh: _onRefresh,
+                    child: ListView.builder(
+                      itemCount: value.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == value.length) {
+                          return const SizedBox(height: 50);
+                        }
+                        return ListTile(
+                          title: Text(
+                            'Post ${index + 1}: ${value[index].title}',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          subtitle: Text(
+                            value[index].body,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        );
+                      },
                     ),
                   ),
-                  loading: () => Center(child: FudoLoading()),
+                  error: (e, _) => RefreshIndicator(
+                    onRefresh: _onRefresh,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.error,
+                                color: Colors.red,
+                                size: 48,
+                              ),
+                              const SizedBox(height: 16),
+                              Text((e as FudoException).message),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  loading: () => const Center(child: FudoLoading()),
                 ),
               ),
             ],

@@ -22,4 +22,8 @@ class AuthProvider extends AsyncNotifier<AuthState> {
       ),
     );
   }
+
+  void logout() {
+    state = AsyncValue.data(AuthState.initial());
+  }
 }
