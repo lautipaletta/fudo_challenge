@@ -1,12 +1,28 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fudo_challenge/config/routes/app_routes.dart';
+import 'package:fudo_challenge/features/auth/di/providers.dart';
 import 'package:fudo_challenge/features/auth/presentation/ui/screens/login_screen.dart';
 import 'package:fudo_challenge/features/posts/presentation/ui/screens/posts_screen.dart';
 import 'package:go_router/go_router.dart';
 
-final routerProvider = Provider<GoRouter>((_) {
+final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: AppRoutes.login.path,
+    redirect: (context, state) {
+      final authState = ref.read(authProvider).value;
+      final isAuthenticated = authState?.isAuthenticated ?? false;
+      final isGoingToLogin = state.matchedLocation == AppRoutes.login.path;
+
+      if (!isAuthenticated && !isGoingToLogin) {
+        return AppRoutes.login.path;
+      }
+
+      if (isAuthenticated && isGoingToLogin) {
+        return AppRoutes.posts.path;
+      }
+
+      return null;
+    },
     routes: [
       GoRoute(
         name: AppRoutes.login.name,
