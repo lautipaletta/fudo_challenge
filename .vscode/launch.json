@@ -8,7 +8,10 @@
             "name": "Run",
             "type": "dart",
             "request": "launch",
-            "program": "lib/main.dart"
+            "program": "lib/main.dart",
+            "toolArgs": [
+                "--dart-define-from-file=keys/.env.development"
+            ]
         }
     ]
 }
