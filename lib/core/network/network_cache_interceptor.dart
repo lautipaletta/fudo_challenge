@@ -42,6 +42,7 @@ class NetworkCacheInterceptor extends Interceptor {
         method: method,
         queryParams: params,
         response: jsonEncode(response.data),
+        expiry: Duration(minutes: 30),
       );
     }
 
