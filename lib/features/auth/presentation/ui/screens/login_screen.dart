@@ -9,15 +9,22 @@ import 'package:fudo_challenge/core/exceptions/fudo_exception.dart';
 import 'package:fudo_challenge/features/auth/di/providers.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends ConsumerWidget {
-  LoginScreen({super.key});
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({super.key});
 
+  @override
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
+
   final _passwordController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final state = ref.watch(authProvider);
     final controller = ref.read(authProvider.notifier);
 
@@ -74,5 +81,12 @@ class LoginScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }

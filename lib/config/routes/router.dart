@@ -11,7 +11,7 @@ final routerProvider = Provider<GoRouter>((_) {
       GoRoute(
         name: AppRoutes.login.name,
         path: AppRoutes.login.path,
-        builder: (context, state) => LoginScreen(),
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         name: AppRoutes.posts.name,
