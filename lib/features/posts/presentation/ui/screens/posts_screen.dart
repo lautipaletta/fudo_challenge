@@ -85,24 +85,28 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
                 child: state.when(
                   data: (value) => RefreshIndicator(
                     onRefresh: _onRefresh,
-                    child: ListView.builder(
-                      itemCount: value.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == value.length) {
-                          return const SizedBox(height: 50);
-                        }
-                        return ListTile(
-                          title: Text(
-                            'Post ${index + 1}: ${value[index].title}',
-                            style: Theme.of(context).textTheme.titleMedium,
+                    child: value.isEmpty
+                        ? const Center(child: Text('No posts found'))
+                        : ListView.builder(
+                            itemCount: value.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == value.length) {
+                                return const SizedBox(height: 50);
+                              }
+                              return ListTile(
+                                title: Text(
+                                  'Post ${index + 1}: ${value[index].title}',
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium,
+                                ),
+                                subtitle: Text(
+                                  value[index].body,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              );
+                            },
                           ),
-                          subtitle: Text(
-                            value[index].body,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        );
-                      },
-                    ),
                   ),
                   error: (e, _) => RefreshIndicator(
                     onRefresh: _onRefresh,
