@@ -36,6 +36,10 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(postsProvider);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.draw),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -59,8 +63,11 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
               Expanded(
                 child: state.when(
                   data: (value) => ListView.builder(
-                    itemCount: value.length,
+                    itemCount: value.length + 1,
                     itemBuilder: (context, index) {
+                      if (index == value.length) {
+                        return const SizedBox(height: 50);
+                      }
                       return ListTile(
                         title: Text(
                           'Post ${index + 1}: ${value[index].title}',
