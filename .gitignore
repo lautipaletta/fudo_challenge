@@ -49,3 +49,7 @@ app.*.map.json
 
 # API Keys
 keys/*
+
+# Generated Files
+*.freezed.dart
+*.g.dart
