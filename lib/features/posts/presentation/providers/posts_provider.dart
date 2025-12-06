@@ -11,8 +11,8 @@ class PostsProvider extends AsyncNotifier<List<Post>> {
 
   @override
   Future<List<Post>> build() async {
-    getPosts();
-    return [];
+    final result = await _getPostsUseCase.call(query: null);
+    return result.fold((l) => throw l, (r) => r);
   }
 
   void _setLoading() {

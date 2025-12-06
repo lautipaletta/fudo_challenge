@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fudo_challenge/config/routes/app_routes.dart';
 import 'package:fudo_challenge/features/auth/di/providers.dart';
 import 'package:fudo_challenge/features/auth/presentation/ui/screens/login_screen.dart';
+import 'package:fudo_challenge/features/posts/presentation/ui/screens/create_post_screen.dart';
 import 'package:fudo_challenge/features/posts/presentation/ui/screens/posts_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -34,11 +35,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.posts.path,
         builder: (context, state) => const PostsScreen(),
       ),
-      // GoRoute(
-      //   name: AppRoutes.createPost.name,
-      //   path: AppRoutes.createPost.path,
-      //   builder: (context, state) => const CreatePostScreen(),
-      // ),
+      GoRoute(
+        name: AppRoutes.createPost.name,
+        path: AppRoutes.createPost.path,
+        builder: (context, state) => const CreatePostScreen(),
+      ),
     ],
   );
 });

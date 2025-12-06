@@ -27,14 +27,6 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(postsProvider);
-    });
-  }
-
   Future<void> _onRefresh() async {
     final query = _searchController.text.trim();
     await ref.read(postsProvider.notifier).getPosts(query: query);
@@ -62,7 +54,7 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => context.pushNamed(AppRoutes.createPost.name),
         child: const Icon(Icons.draw),
       ),
       body: SafeArea(
