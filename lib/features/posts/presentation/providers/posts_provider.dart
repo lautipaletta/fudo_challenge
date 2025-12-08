@@ -26,4 +26,8 @@ class PostsProvider extends AsyncNotifier<List<Post>> {
       (r) => state = AsyncValue.data(r),
     );
   }
+
+  void addPost(Post post) {
+    state = AsyncValue.data([...state.value ?? [], post]);
+  }
 }
