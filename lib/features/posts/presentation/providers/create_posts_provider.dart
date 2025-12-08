@@ -15,6 +15,10 @@ class CreatePostsProvider extends AsyncNotifier<void> {
   }
 
   void _setLoading() {
+    if (state.isLoading) {
+      state = AsyncValue.data(null);
+      return;
+    }
     state = const AsyncValue.loading();
   }
 
@@ -29,6 +33,7 @@ class CreatePostsProvider extends AsyncNotifier<void> {
       body: body,
       userId: userId,
     );
+    _setLoading();
     return result;
   }
 }
