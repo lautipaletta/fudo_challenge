@@ -7,6 +7,7 @@ import 'package:fudo_challenge/features/posts/domain/entities/post.dart';
 import 'package:fudo_challenge/features/posts/domain/repository/posts_repository.dart';
 import 'package:fudo_challenge/features/posts/domain/usecases/get_posts.dart';
 import 'package:fudo_challenge/features/posts/domain/usecases/create_post.dart';
+import 'package:fudo_challenge/features/posts/presentation/providers/create_posts_provider.dart';
 import 'package:fudo_challenge/features/posts/presentation/providers/posts_provider.dart';
 import 'package:fudo_challenge/features/users/di/providers.dart';
 
@@ -34,3 +35,9 @@ final createPostUseCaseProvider = Provider<CreatePostUseCase>((ref) {
 final postsProvider = AsyncNotifierProvider<PostsProvider, List<Post>>(() {
   return PostsProvider();
 });
+
+final createPostsProvider = AsyncNotifierProvider<CreatePostsProvider, void>(
+  () {
+    return CreatePostsProvider();
+  },
+);

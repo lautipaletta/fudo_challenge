@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fudo_challenge/config/routes/routes.dart';
 import 'package:fudo_challenge/core/common/utils/debouncer.dart';
+import 'package:fudo_challenge/core/common/utils/snackbar_handler.dart';
 import 'package:fudo_challenge/core/common/widgets/fudo_loading.dart';
 import 'package:fudo_challenge/core/common/widgets/fudo_text_field.dart';
 import 'package:fudo_challenge/core/exceptions/fudo_exception.dart';
@@ -54,7 +55,12 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.pushNamed(AppRoutes.createPost.name),
+        onPressed: () async {
+          final result = await context.pushNamed(AppRoutes.createPost.name);
+          if (context.mounted && result == true) {
+            SnackbarHandler.showSnackbar(context, 'Post created successfully');
+          }
+        },
         child: const Icon(Icons.draw),
       ),
       body: SafeArea(
