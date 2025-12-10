@@ -43,7 +43,9 @@ class NetworkCacheInterceptor extends Interceptor {
         method: method,
         queryParams: params,
         response: jsonEncode(response.data),
-        expiry: Duration(minutes: 30),
+        // Elimino la expiración de esta cache dado que quiero hacer utilizable la app
+        // sin importar hace cuánto me haya quedado sin internet, pero lo dejo en la interfaz para
+        // usos futuros...
       );
     }
 
