@@ -35,7 +35,9 @@ class CreatePostsProvider extends AsyncNotifier<void> {
     );
     _setLoading();
     if (result.isRight) {
-      ref.read(postsProvider.notifier).addPost(result.right);
+      final controller = ref.read(postsProvider.notifier);
+      await controller.getPosts();
+      controller.addPost(result.right);
     }
     return result;
   }
