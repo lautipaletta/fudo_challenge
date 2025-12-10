@@ -68,6 +68,7 @@ class NetworkCacheInterceptor extends Interceptor {
 
       if (cachedResponse != null) {
         if (kDebugMode) {
+          // Formato copiado de pretty_dio_logger para mantener consistencia en los logs
           print(
             '╔══════════════════════════════════════════════════════════════╗',
           );
