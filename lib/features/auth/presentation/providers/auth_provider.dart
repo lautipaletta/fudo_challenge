@@ -24,7 +24,7 @@ class AuthProvider extends AsyncNotifier<AuthState> {
     result.fold(
       (l) => state = AsyncValue.error(l, StackTrace.current),
       (r) => state = AsyncValue.data(
-        AuthState(isAuthenticated: true, email: email),
+        AuthState(isAuthenticated: true, authUser: r),
       ),
     );
   }

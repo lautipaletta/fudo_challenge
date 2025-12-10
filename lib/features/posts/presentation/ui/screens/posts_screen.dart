@@ -36,13 +36,6 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(postsProvider);
-
-    ref.listen(authProvider, (previous, next) {
-      if (next.hasValue && next.value?.isAuthenticated == false) {
-        context.goNamed(AppRoutes.login.name);
-      }
-    });
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Posts'),

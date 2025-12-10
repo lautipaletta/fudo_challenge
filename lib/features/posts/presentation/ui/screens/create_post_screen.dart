@@ -61,8 +61,8 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen> {
                                 .createPost(
                                   title: _titleController.text.trim(),
                                   body: _contentController.text.trim(),
-                                  userId: 1,
                                 );
+                            if (!context.mounted) return;
                             result.fold(
                               (l) => SnackbarHandler.showSnackbar(
                                 context,

@@ -10,7 +10,7 @@ class CheckSessionUseCase {
     final session = await authRepository.checkSession();
     return session.fold(
       (l) => AuthState.initial(),
-      (r) => AuthState(isAuthenticated: r != null, email: r?.email),
+      (r) => AuthState(isAuthenticated: r != null, authUser: r?.authUser),
     );
   }
 }
