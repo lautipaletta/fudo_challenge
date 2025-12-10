@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:fudo_challenge/core/cache/cache/cache_service.dart';
 import 'package:hive/hive.dart';
 
+// Futura mejora: Hive suele tener problemas con la concurrencia, se podría implementar un
+// sistema de locks con mutex para evitarlos.
 class CacheServiceImpl implements CacheService {
   CacheServiceImpl({required this.boxName});
 
