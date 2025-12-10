@@ -27,7 +27,8 @@ class PostsProvider extends AsyncNotifier<List<Post>> {
     );
   }
 
+  // Agrego el post al principio de la lista para que se muestre al inicio.
   void addPost(Post post) {
-    state = AsyncValue.data([...state.value ?? [], post]);
+    state = AsyncValue.data([post, ...state.value ?? []]);
   }
 }
