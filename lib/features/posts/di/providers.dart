@@ -3,12 +3,12 @@ import 'package:fudo_challenge/core/network/api_dio_provider.dart';
 import 'package:fudo_challenge/features/posts/data/data_sources/posts_data_source.dart';
 import 'package:fudo_challenge/features/posts/data/data_sources/remote/remote_posts_data_source.dart';
 import 'package:fudo_challenge/features/posts/data/repository/posts_repository_impl.dart';
-import 'package:fudo_challenge/features/posts/domain/entities/post.dart';
 import 'package:fudo_challenge/features/posts/domain/repository/posts_repository.dart';
 import 'package:fudo_challenge/features/posts/domain/usecases/get_posts.dart';
 import 'package:fudo_challenge/features/posts/domain/usecases/create_post.dart';
 import 'package:fudo_challenge/features/posts/presentation/providers/create_posts_provider.dart';
 import 'package:fudo_challenge/features/posts/presentation/providers/posts_provider.dart';
+import 'package:fudo_challenge/features/posts/presentation/providers/posts_state.dart';
 import 'package:fudo_challenge/features/users/di/providers.dart';
 
 final postsDataSourceProvider = Provider<PostsDataSource>((ref) {
@@ -32,7 +32,7 @@ final createPostUseCaseProvider = Provider<CreatePostUseCase>((ref) {
   return CreatePostUseCase(postsRepository: ref.read(postsRepositoryProvider));
 });
 
-final postsProvider = AsyncNotifierProvider<PostsProvider, List<Post>>(() {
+final postsProvider = AsyncNotifierProvider<PostsProvider, PostsState>(() {
   return PostsProvider();
 });
 

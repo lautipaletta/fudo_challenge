@@ -35,6 +35,17 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(postsProvider.select((state) => state.value?.query), (
+      previous,
+      next,
+    ) {
+      if (next != _searchController.text.trim()) {
+        setState(() {
+          _searchController.text = next ?? '';
+        });
+      }
+    });
+
     final state = ref.watch(postsProvider);
     return Scaffold(
       appBar: AppBar(
@@ -76,23 +87,23 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
                 child: state.when(
                   data: (value) => RefreshIndicator(
                     onRefresh: _onRefresh,
-                    child: value.isEmpty
+                    child: value.posts.isEmpty
                         ? const Center(child: Text('No posts found'))
                         : ListView.builder(
-                            itemCount: value.length + 1,
+                            itemCount: value.posts.length + 1,
                             itemBuilder: (context, index) {
-                              if (index == value.length) {
+                              if (index == value.posts.length) {
                                 return const SizedBox(height: 50);
                               }
                               return ListTile(
                                 title: Text(
-                                  'Post ${index + 1}: ${value[index].title}',
+                                  'Post ${index + 1}: ${value.posts[index].title}',
                                   style: Theme.of(
                                     context,
                                   ).textTheme.titleMedium,
                                 ),
                                 subtitle: Text(
-                                  value[index].body,
+                                  value.posts[index].body,
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               );
